@@ -78,6 +78,7 @@ const UserProfile = () => {
       </div>
       <div className="mt-5">
         <Button
+          id="qsLogoutBtn"
           color="white"
           bgColor={currentColor}
           text="Logout"

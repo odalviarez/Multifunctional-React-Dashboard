@@ -24,12 +24,13 @@ const providerConfig = {
 
 ReactDOM.render(
   <React.StrictMode>
-    <ContextProvider>
       <Auth0Provider {...providerConfig}>
+    <ContextProvider>
         <App />
-      </Auth0Provider>
     </ContextProvider>
+      </Auth0Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );
 
+serviceWorker.unregister();

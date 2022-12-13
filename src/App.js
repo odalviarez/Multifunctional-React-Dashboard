@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
+import Loading from "./components/Loading";
 import {
   Ecommerce,
   Orders,
@@ -14,8 +15,33 @@ import {
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
+import {
+  Auth0Provider,
+  withAuthenticationRequired,
+  useAuth0,
+} from "@auth0/auth0-react";
+
+
+const ProtectedRoute = ({ component, ...args }) => {
+  const Component = withAuthenticationRequired(component, args);
+  return <Component />;
+};
+
+const Auth0ProviderWithRedirectCallback = ({ children, ...props }) => {
+  const navigate = useNavigate();
+  const onRedirectCallback = (appState) => {
+    navigate((appState && appState.returnTo) || window.location.pathname);
+  };
+  return (
+    <Auth0Provider onRedirectCallback={onRedirectCallback} {...props}>
+      {children}
+    </Auth0Provider>
+  );
+};
 
 const App = () => {
+
+
   const {
     setCurrentColor,
     setCurrentMode,
@@ -35,6 +61,15 @@ const App = () => {
     }
   }, []);
 
+    const { isLoading, error } = useAuth0();
+
+    if (error) {
+      return <div>Oops... {error.message}</div>;
+    }
+
+    if (isLoading) {
+      return <Loading />;
+    }
   return (
     <div className={currentMode === "Dark" ? "dark" : ""}>
       <BrowserRouter>
@@ -72,6 +107,13 @@ const App = () => {
             </div>
             <div>
               {themeSettings && <ThemeSettings />}
+      <Auth0ProviderWithRedirectCallback
+        domain="dev-a3kheszuwvfvuoad.us.auth0.com"
+        clientId="zVBOjQQhQSTxp3S8KRXOfLaMVMruuk2u"
+        redirectUri={window.location.origin}
+        audience="https://scaneame.vercel.app/"
+        //scope="read:current_user update:current_user_metadata"
+      >
 
               <Routes>
                 {/* dashboard  */}
@@ -87,6 +129,7 @@ const App = () => {
                 <Route path="/area" element={<Area />} />
 
               </Routes>
+      </Auth0ProviderWithRedirectCallback>
             </div>
             <Footer />
           </div>
