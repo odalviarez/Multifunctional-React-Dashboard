@@ -13,7 +13,7 @@ const UserProfile = () => {
 
 
     const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
-
+    console.log("user: " , user)
     const logoutWithRedirect = () =>
       logout({
         returnTo: window.location.origin,
@@ -34,13 +34,13 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={avatar}
+          src={user.picture}
           alt="user-profile"
         />
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">
             {" "}
-            Aktan Morg{" "}
+            {user.name}{" "}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
             {" "}
@@ -48,7 +48,7 @@ const UserProfile = () => {
           </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
             {" "}
-            dzhanaliev.aktan@gmail.com{" "}
+            {user.email}{" "}
           </p>
         </div>
       </div>
@@ -77,15 +77,12 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
-          id="qsLogoutBtn"
-          color="white"
-          bgColor={currentColor}
-          text="Logout"
-          borderRadius="10px"
-          width="full"
+        <div
+          className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
           onClick={() => logoutWithRedirect()}
-        />
+        >
+          <span className="text-gray-400 font-bold ml-1 text-14">Log Out</span>
+        </div>
       </div>
     </div>
   );

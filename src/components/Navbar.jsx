@@ -9,7 +9,6 @@ import { useStateContext } from "../contexts/ContextProvider";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
-  
   <TooltipComponent content={title} position="BottomCenter">
     <button
       type="button"
@@ -36,7 +35,7 @@ const Navbar = () => {
     setScreenSize,
     screenSize,
   } = useStateContext();
-  
+
   const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -56,12 +55,12 @@ const Navbar = () => {
     }
   }, [screenSize]);
 
-    const logoutWithRedirect = () =>
-      logout({
-        returnTo: window.location.origin,
-      });
+  const logoutWithRedirect = () =>
+    logout({
+      returnTo: window.location.origin,
+    });
   const handleActiveMenu = () => setActiveMenu(!activeMenu);
-
+  console.log("isAutenti: ", isAuthenticated);
   return (
     <div className="flex justify-between p-2 md:ml-6 md:mr-6 relative">
       <NavButton
@@ -71,37 +70,36 @@ const Navbar = () => {
         icon={<AiOutlineMenu />}
       />
       <div className="flex">
-          <TooltipComponent content="Profile" position="BottomCenter">
-            {isAuthenticated ? (
+        <TooltipComponent content="Profile" position="BottomCenter">
+          {isAuthenticated ? (
             <div
               className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
               onClick={() => handleClick("userProfile")}
             >
               <img
                 className="rounded-full w-8 h-8"
-                src={avatar}
+                src={user.picture}
                 alt="user-profile"
               />
               <p>
                 <span className="text-gray-400 text-14">Hi,</span>{" "}
                 <span className="text-gray-400 font-bold ml-1 text-14">
-                  Morg
+                  {user.name}
                 </span>
               </p>
               <MdKeyboardArrowDown className="text-gray-400 text-14" />
             </div>
-        ) : (
-          <Button
-            id="qsLoginBtn"
-            color="white"
-            bgColor={currentColor}
-            text="Login"
-            borderRadius="10px"
-            width="full"
-            onClick={() => loginWithRedirect({})}
-          />
-        )}
-          </TooltipComponent>
+          ) : (
+            <div
+              className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              onClick={() => loginWithRedirect()}
+            >
+              <span className="text-gray-400 font-bold ml-1 text-14">
+                Log in
+              </span>
+            </div>
+          )}
+        </TooltipComponent>
 
         {isClicked.userProfile && <UserProfile />}
       </div>
