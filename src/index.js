@@ -7,7 +7,7 @@ import { ContextProvider } from "./contexts/ContextProvider";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { getConfig } from "./config";
 import * as serviceWorker from "./serviceWorker";
-import reportWebVitals from "./reportWebVitals";
+
 
 const config = getConfig();
 
@@ -30,4 +30,3 @@ ReactDOM.render(
   document.getElementById("root")
 );
 serviceWorker.unregister();
-reportWebVitals();

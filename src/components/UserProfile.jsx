@@ -5,9 +5,19 @@ import { Button } from ".";
 import { userProfileData } from "../data/dummy";
 import { useStateContext } from "../contexts/ContextProvider";
 import avatar from "../data/avatar.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
+
+
+    const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+
+    const logoutWithRedirect = () =>
+      logout({
+        returnTo: window.location.origin,
+      });
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -73,6 +83,7 @@ const UserProfile = () => {
           text="Logout"
           borderRadius="10px"
           width="full"
+          onClick={() => logoutWithRedirect()}
         />
       </div>
     </div>
