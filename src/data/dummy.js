@@ -503,7 +503,7 @@ export const links = [
       {
         name: 'area',
         icon: <AiOutlineAreaChart />,
-      },
+      }
     ],
   },
 ];
